@@ -11,7 +11,6 @@ double x;
 double y;
 double z;
 };
-
 points translation(double x,double y,double z,double tx,double ty,double tz)
 {
 points r;
@@ -97,36 +96,46 @@ q=translation(q.x,q.y,q.z,xp,yp,zp);
 return q;
 }
 
-vector<points> allpoints;
+vector<vector<points> > allpoints;
 
-vector<points> getpoints()
+vector<vector<points> > getpoints()
 {
-int n;
-cout<<"Enter number of Points: ";
+int m,n;
+cout<<"Enter number of Faces: ";
 cin>>n;
+cout<<"Enter number of Points in each face: ";
+cin>>m;
 cout<<"Enter Points: \n";
-vector<points> kal;
-for(int i=1;i<=n;i++)
+vector<points> kal1;
+vector<vector<points> > kal2;
+int i,j;
+for(i=0;i<n;i++)
+{
+cout<<"Face: "<<i+1<<endl;
+for(j=0;j<m;j++)
 {
 	double x,y,z;
-	cout<<"x"<<i<<": ";
+	cout<<"x"<<j<<": ";
 	cin>>x;
-	cout<<"y"<<i<<": ";
+	cout<<"y"<<j<<": ";
 	cin>>y;
-	cout<<"z"<<i<<": ";
+	cout<<"z"<<j<<": ";
 	cin>>z;
 	points alpha;
 	alpha.x=x;
 	alpha.y=y;
 	alpha.z=z;
-	kal.push_back(alpha);
+	kal1.push_back(alpha);
 }
-return kal;
+kal2.push_back(kal1);
+kal1.clear();
+}
+return kal2;
 }
 
-vector<points> g;
-vector<points> temp;
-vector<points> menu(vector<points> temp)
+vector<vector<points> > g;
+vector<vector<points> > temp;
+vector<vector<points> > menu(vector<vector<points> > temp)
 {
 cout<<"Menu: \n";
 cout<<"Press 1 for Translation.\n";
@@ -160,11 +169,15 @@ case 1:
 		cin>>tz;
 
 		int n=temp.size();
-		int i=0;
+		int m=temp[0].size();
+		int i=0,j=0;
 		while(i!=n)
 		{
-		temp.push_back(translation(temp[0].x,temp[0].y,temp[0].z,tx,ty,tz));
-		temp.erase(temp.begin());
+		for(j=0;j<m;j++)
+		{
+		temp[i].push_back(translation(temp[i][0].x,temp[i][0].y,temp[i][0].z,tx,ty,tz));
+		temp[i].erase(temp[i].begin());
+		}
 		i++;
 		}
 		glFlush();
@@ -200,11 +213,15 @@ case 2:
 		cin>>sz;
 
 		int n=temp.size();
-		int i=0;
+		int m=temp[0].size();
+		int i=0,j=0;
 		while(i!=n)
+		{		
+		for(j=0;j<m;j++)
 		{
-		temp.push_back(scaling_about_origin(temp[0].x,temp[0].y,temp[0].z,sx,sy,sz));
-		temp.erase(temp.begin());
+		temp[i].push_back(scaling_about_origin(temp[i][0].x,temp[i][0].y,temp[i][0].z,sx,sy,sz));
+		temp[i].erase(temp[i].begin());
+		}
 		i++;
 		}
 		glFlush();
@@ -234,11 +251,15 @@ case 3:
 		cin>>theta;		
 		
 		int n=temp.size();
-		int i=0;
+		int m=temp[0].size();
+		int i=0,j=0;
 		while(i!=n)
 		{
-		temp.push_back(rotation_about_xaxis(temp[0].x,temp[0].y,temp[0].z,theta));
-		temp.erase(temp.begin());
+		for(j=0;j<m;j++)
+		{
+		temp[i].push_back(rotation_about_xaxis(temp[i][0].x,temp[i][0].y,temp[i][0].z,theta));
+		temp[i].erase(temp[i].begin());
+		}
 		i++;
 		}
 		glFlush();
@@ -269,11 +290,15 @@ case 4:
 		cin>>theta;		
 		
 		int n=temp.size();
-		int i=0;
+		int m=temp[0].size();
+		int i=0,j=0;
 		while(i!=n)
 		{
-		temp.push_back(rotation_about_yaxis(temp[0].x,temp[0].y,temp[0].z,theta));
-		temp.erase(temp.begin());
+		for(j=0;j<m;j++)
+		{
+		temp[i].push_back(rotation_about_yaxis(temp[i][0].x,temp[i][0].y,temp[i][0].z,theta));
+		temp[i].erase(temp[i].begin());
+		}
 		i++;
 		}
 		glFlush();
@@ -304,11 +329,15 @@ case 5:
 		cin>>theta;		
 		
 		int n=temp.size();
-		int i=0;
+		int m=temp[0].size();
+		int i=0,j=0;
 		while(i!=n)
 		{
-		temp.push_back(rotation_about_zaxis(temp[0].x,temp[0].y,temp[0].z,theta));
-		temp.erase(temp.begin());
+		for(j=0;j<m;j++)
+		{
+		temp[i].push_back(rotation_about_zaxis(temp[i][0].x,temp[i][0].y,temp[i][0].z,theta));
+		temp[i].erase(temp[i].begin());
+		}
 		i++;
 		}
 		glFlush();
@@ -350,11 +379,15 @@ case 6:
 		cin>>sz;
 		
 		int n=temp.size();
-		int i=0;
+		int m=temp[0].size();
+		int i=0,j=0;
 		while(i!=n)
 		{
-		temp.push_back(scaling_about_pivot(temp[0].x,temp[0].y,temp[0].z,xp,yp,zp,sx,sy,sz));
-		temp.erase(temp.begin());
+		for(j=0;j<m;j++)
+		{
+		temp[i].push_back(scaling_about_pivot(temp[i][0].x,temp[i][0].y,temp[i][0].z,xp,yp,zp,sx,sy,sz));
+		temp[i].erase(temp[i].begin());
+		}
 		i++;
 		}
 		glFlush();
@@ -398,11 +431,15 @@ case 7:
 		cin>>theta;
 		
 		int n=temp.size();
-		int i=0;
+		int m=temp[0].size();
+		int i=0,j=0;
 		while(i!=n)
 		{
-		temp.push_back(rotation_about_arbitrary(temp[0].x,temp[0].y,temp[0].z,a,b,c,xp,yp,zp,theta));
-		temp.erase(temp.begin());
+		for(j=0;j<m;j++)
+		{
+		temp[i].push_back(rotation_about_arbitrary(temp[i][0].x,temp[i][0].y,temp[i][0].z,a,b,c,xp,yp,zp,theta));
+		temp[i].erase(temp[i].begin());
+		}
 		i++;
 		}
 		glFlush();
@@ -430,7 +467,7 @@ default:
 return temp;
 }
 
-vector<points> process()
+vector<vector<points> > process()	
 {
 temp=allpoints;
 temp=menu(temp);
@@ -441,6 +478,7 @@ return temp;
 void display() {
 glClear(GL_COLOR_BUFFER_BIT);
 glColor3f(0.0, 0.0, 0.0);
+
 glBegin(GL_LINE_LOOP);
 glVertex3i(-320,0,0);
 glVertex3i(320,0,0);
@@ -457,20 +495,30 @@ glVertex3i(0,0,320);
 glEnd();
 
 glColor3f(0.0, 100.0, 0.0);
-glBegin(GL_POLYGON);
-for(int i=0;i<allpoints.size();i++)
+
+int i=0,j=0;
+for(i=0;i<allpoints.size();i++)
 {
-glVertex3i(allpoints[i].x,allpoints[i].y,allpoints[i].z);
+glBegin(GL_LINE_LOOP);
+for(j=0;j<allpoints[0].size();j++)
+{
+glVertex3i(allpoints[i][j].x,allpoints[i][j].y,allpoints[i][j].z);
 }
 glEnd();
+}
 
-
-glBegin(GL_POLYGON);
-for(int i=0;i<g.size();i++)
+i=0,j=0;
+for(i=0;i<g.size();i++)
 {
-glVertex3i(g[i].x,g[i].y,g[i].z);
+glColor3f(100.0, 100.0, 0.0);
+glBegin(GL_LINE_LOOP);
+for(j=0;j<g[0].size();j++)
+{
+glVertex3i(g[i][j].x,g[i][j].y,g[i][j].z);
 }
 glEnd();
+}
+
 glFlush();
 }
 
